@@ -1,0 +1,20 @@
+{
+  "name": "benconnito/kopper",
+  "autoload": {
+    "psr-0": {
+      "Kopper": "classes",
+      "Propel": "classes"
+    }
+  },
+  "config": {
+    "vendor-dir": "libraries",
+    "preferred-install": "dist"
+  },
+  "require": {
+    "aws/aws-sdk-php": "2.*",
+    "slim/slim": "2.*",
+    "propel/propel": "dev-master",
+    "facebook/php-sdk-v4": "4.*",
+    "google/apiclient": "dev-master"
+  }
+}
