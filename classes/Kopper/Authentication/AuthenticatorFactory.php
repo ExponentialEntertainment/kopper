@@ -2,6 +2,8 @@
 
 namespace Kopper\Authentication;
 
+use Kopper\Exception\InvalidProviderException;
+
 class AuthenticatorFactory {
 
   public static function create($provider) {

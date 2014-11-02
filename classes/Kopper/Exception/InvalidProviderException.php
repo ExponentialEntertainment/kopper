@@ -1,6 +1,6 @@
 <?php
 
-namespace Kopper\Authentication;
+namespace Kopper\Exception;
 
 use Exception;
 
