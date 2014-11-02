@@ -2,6 +2,8 @@
 
 namespace Kopper\Controller;
 
+use Kopper\Exception\NotImplementedException;
+
 abstract class RestController extends Controller {
 
   abstract public function getAction();

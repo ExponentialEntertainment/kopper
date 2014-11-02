@@ -1,6 +1,6 @@
 <?php
 
-namespace Kopper\Controller;
+namespace Kopper\Exception;
 
 use Exception;
 
