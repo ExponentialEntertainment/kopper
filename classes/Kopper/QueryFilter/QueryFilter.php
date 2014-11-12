@@ -43,6 +43,8 @@ class QueryFilter {
     foreach ($filters as $key => $value) {
       if ($key === 'q' && is_callable(array($query, 'filterByFullText')) === true) {
         $query->filterByFullText($value);
+      } else if($key === 'realId' && is_callable(array($query, 'filterById')) === true) {
+        $query->filterById($value);
       } else if (Utility::inString('orderBy', $key) === true) {
         $method = $key;
 
