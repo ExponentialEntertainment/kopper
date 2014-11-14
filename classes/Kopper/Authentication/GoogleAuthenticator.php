@@ -30,19 +30,19 @@ class GoogleAuthenticator extends Authenticator {
             $profile = $token;
             $profile['id'] = $ticket['sub'];
           } else {
-            throw new NonFatalException('invalid token');
+            throw new NonFatalException('invalid token, emails dont match');
           }
         } else if (empty($token['access_token']) === false) {
           //regular access token
           $client->setAccessToken(json_encode($token));
         } else {
-          throw new NonFatalException('invalid token');
+          throw new NonFatalException('invalid token, no accpetable attribute');
         }
       } else if (is_string($token) === true) {
         //token is a CODE to exchange for access token
         $client->authenticate($token);
       } else {
-        throw new NonFatalException('invalid token');
+        throw new NonFatalException('invalid token, invalid type');
       }
 
       if (empty($profile) === true) {
