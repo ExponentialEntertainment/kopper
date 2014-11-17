@@ -1,5 +1,6 @@
 {
   "name": "benconnito/kopper",
+  "license": "MIT",
   "autoload": {
     "psr-0": {
       "Kopper": "classes",
