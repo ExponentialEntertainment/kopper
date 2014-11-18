@@ -48,7 +48,7 @@ abstract class EmailProvider {
     $this->loginAttempts = GlobalCache::get($this->attemptLimitKey($userId));
 
     if ($this->loginAttempts > 3) {
-      throw new Exception('to many attempts', 403);
+      throw new Exception('too many attempts', 403);
     }
   }
 
