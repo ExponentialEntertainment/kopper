@@ -45,11 +45,12 @@ class QueryFilter {
         $query->filterByFullText($value);
       } else if($key === 'realId' && is_callable(array($query, 'filterById')) === true) {
         $query->filterById($value);
-      } else if (Utility::inString('orderBy', $key) === true) {
-        $method = $key;
+      } else if ($key === 'orderBy') {
+        $method = $key.  ucfirst($value);
+        $order = empty($filters['order']) ? 'desc' : $filters['order'];
 
         if (is_callable(array($query, $method)) === true) {
-          $query = call_user_func(array($query, $method), $value);
+          $query = call_user_func(array($query, $method), $order);
         }
       } else if (Utility::inString(self::COMPARISON_SUFFIX, $key) === false) {
         $cleanKey = $this->clean($key);
