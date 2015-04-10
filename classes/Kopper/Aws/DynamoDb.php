@@ -8,6 +8,7 @@ use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Exception\ResourceInUseException;
 use Aws\DynamoDb\Enum\Select;
 use Aws\DynamoDb\Iterator\ItemIterator;
+use Aws\DynamoDb\Marshaler;
 
 class DynamoDb extends DbClient {
 
@@ -25,34 +26,42 @@ class DynamoDb extends DbClient {
   }
 
   public function getItem($tableName, array $key) {
+    $marshaler = new Marshaler();
+    
     $result = $this->client->getItem(array(
       'ConsistentRead' => true,
       'TableName' => $this->getRealEnvName($tableName),
-      'Key' => $this->client->formatAttributes($key)
+      'Key' => $marshaler->marshalItem($key)
     ));
 
-    return $result['Item'];
+    return $marshaler->unmarshalItem($result['Item']);
   }
 
   public function putItem($tableName, array $item) {
+    $marshaler = new Marshaler();
+    
     $this->client->putItem(array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Item' => $this->client->formatAttributes($item)
+      'Item' => $marshaler->marshalItem($item)
     ));
   }
 
   public function updateItem($tableName, array $key, array $item) {
+    $marshaler = new Marshaler();
+      
     $this->client->updateItem(array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Key' => $this->client->formatAttributes($key),
+      'Key' => $marshaler->marshalItem($key),
       'AttributeUpdates' => $item
     ));
   }
 
   public function deleteItem($tableName, array $key) {
+    $marshaler = new Marshaler();
+    
     $this->client->deleteItem(array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Key' => $this->client->formatAttributes($key)
+      'Key' => $marshaler->marshalItem($key)
     ));
   }
 
