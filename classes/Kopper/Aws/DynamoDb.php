@@ -37,16 +37,20 @@ class DynamoDb extends DbClient {
     return $marshaler->unmarshalItem($result['Item']);
   }
 
-  public function putItem($tableName, array $item, $condition = null) {
+  public function putItem($tableName, array $item, $condition = null, $conditionValuesMap = null) {
     $marshaler = new Marshaler();
 
     $params = array(
       'TableName' => $this->getRealEnvName($tableName),
       'Item' => $marshaler->marshalItem($item)
     );
-    
-    if(empty($condition) === false){
+
+    if (empty($condition) === false) {
       $params['ConditionExpression'] = $condition;
+      
+      if (empty($conditionValuesMap) === false) {
+        $params['ExpressionAttributeValues'] = $conditionValuesMap;
+      }
     }
 
     $this->client->putItem($params);
