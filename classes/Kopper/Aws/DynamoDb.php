@@ -27,7 +27,7 @@ class DynamoDb extends DbClient {
 
   public function getItem($tableName, array $key) {
     $marshaler = new Marshaler();
-    
+
     $result = $this->client->getItem(array(
       'ConsistentRead' => true,
       'TableName' => $this->getRealEnvName($tableName),
@@ -37,18 +37,24 @@ class DynamoDb extends DbClient {
     return $marshaler->unmarshalItem($result['Item']);
   }
 
-  public function putItem($tableName, array $item) {
+  public function putItem($tableName, array $item, $condition = null) {
     $marshaler = new Marshaler();
-    
-    $this->client->putItem(array(
+
+    $params = array(
       'TableName' => $this->getRealEnvName($tableName),
       'Item' => $marshaler->marshalItem($item)
-    ));
+    );
+    
+    if(empty($condition) === false){
+      $params['ConditionExpression'] = $condition;
+    }
+
+    $this->client->putItem($params);
   }
 
   public function updateItem($tableName, array $key, array $item) {
     $marshaler = new Marshaler();
-      
+
     $this->client->updateItem(array(
       'TableName' => $this->getRealEnvName($tableName),
       'Key' => $marshaler->marshalItem($key),
@@ -58,7 +64,7 @@ class DynamoDb extends DbClient {
 
   public function deleteItem($tableName, array $key) {
     $marshaler = new Marshaler();
-    
+
     $this->client->deleteItem(array(
       'TableName' => $this->getRealEnvName($tableName),
       'Key' => $marshaler->marshalItem($key)
