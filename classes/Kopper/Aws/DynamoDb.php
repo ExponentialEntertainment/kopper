@@ -182,5 +182,24 @@ class DynamoDb extends DbClient {
 
     return $iterator;
   }
+  
+  public function query($tableName, array $conditions = null, array $fields = null) {
+    $params = array(
+      'TableName' => $this->getRealEnvName($tableName)
+    );
+
+    if (empty($fields) == false) {
+      $params['Select'] = Select::SPECIFIC_ATTRIBUTES;
+      $params['AttributesToGet'] = $fields;
+    }
+
+    if (empty($conditions) == false) {
+      $params['KeyConditions'] = $conditions;
+    }
+
+    $iterator = new ItemIterator($this->client->getQueryIterator($params));
+
+    return $iterator;
+  }
 
 }
