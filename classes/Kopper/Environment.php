@@ -27,5 +27,15 @@ class Environment {
       return $prefix . $seperator . $env . $seperator . $name;
     }
   }
+  
+  public static function isEnvironment($environment){
+    if(APPLICATION_ENV === $environment){
+      return true;
+    }else if(strpos(APPLICATION_ENV, "-$environment") >= 0){
+      return true;
+    }
+    
+    return false;
+  }
 
 }
