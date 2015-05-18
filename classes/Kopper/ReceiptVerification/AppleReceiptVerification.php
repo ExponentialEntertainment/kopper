@@ -19,7 +19,7 @@ class AppleReceiptVerification extends ReceiptVerification {
       throw new NonFatalException('missing receipt');
     }
 
-    $url = APPLICATION_ENV === Environment::PRODUCTION ? self::PRODUCTION_API : self::SANDBOX_API;
+    $url = Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API;
     $request = new URLRequest($url);
 
     $response = $request->postJSON(array('receipt-data' => $data->receipt), false);

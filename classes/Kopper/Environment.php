@@ -28,7 +28,7 @@ class Environment {
     }
   }
   
-  public static function isEnvironment($environment){
+  public static function is($environment){
     if(APPLICATION_ENV === $environment){
       return true;
     }else if(strpos(APPLICATION_ENV, "-$environment") >= 0){

@@ -25,7 +25,7 @@ class AmazonReceiptVerification extends ReceiptVerification {
     $secret = Config::get('amazon.iap.secret');
 
     $suffix = "/version/2.0/verify/developer/$secret/user/{$data->userId}/purchaseToken/{$data->receipt}";
-    $url = (APPLICATION_ENV === Environment::PRODUCTION ? self::PRODUCTION_API : self::SANDBOX_API) . $suffix;
+    $url = (Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API) . $suffix;
 
     $request = new URLRequest($url);
     $response = $request->getJSON(false);
