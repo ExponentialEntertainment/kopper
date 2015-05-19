@@ -3,6 +3,7 @@
 namespace Kopper\ReceiptVerification;
 
 use Exception;
+use Kopper\Config;
 use Kopper\Environment;
 use Kopper\Exception\NonFatalException;
 use Kopper\Logger\Logger;
@@ -21,7 +22,11 @@ class AppleReceiptVerification extends ReceiptVerification {
       throw new NonFatalException('missing receipt');
     }
 
-    $url = Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API;
+    if(Config::get('receiptVerification.sandbox') === true){
+      $url = self::SANDBOX_API;
+    }else{
+      $url = Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API;
+    }
     $request = new URLRequest($url);
 
     $response = $request->postJSON(array('receipt-data' => $data->receipt), false);
