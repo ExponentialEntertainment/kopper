@@ -2,8 +2,10 @@
 
 namespace Kopper\ReceiptVerification;
 
+use Exception;
 use Kopper\Environment;
 use Kopper\Exception\NonFatalException;
+use Kopper\Logger\Logger;
 use Kopper\URLRequest;
 
 class AppleReceiptVerification extends ReceiptVerification {
@@ -35,6 +37,8 @@ class AppleReceiptVerification extends ReceiptVerification {
         }
       }
     }
+
+    Logger::getInstance()->log(new Exception('bad receipt - ' . json_encode($response)));
 
     return false;
   }
