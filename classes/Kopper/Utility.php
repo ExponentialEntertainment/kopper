@@ -184,5 +184,9 @@ class Utility {
       }
     }
   }
+  
+  public static function generateRandomString($length = 16) {
+    return substr(hash('sha256', time() . mt_rand()), 0, $length);
+  }
 
 }
