@@ -22,11 +22,12 @@ class AppleReceiptVerification extends ReceiptVerification {
       throw new NonFatalException('missing receipt');
     }
 
-    if(Config::get('receiptVerification.sandbox') === true){
+    if (Config::get('receiptVerification.sandbox') === true) {
       $url = self::SANDBOX_API;
-    }else{
+    } else {
       $url = Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API;
     }
+    
     $request = new URLRequest($url);
 
     $response = $request->postJSON(array('receipt-data' => $data->receipt), false);
@@ -40,6 +41,10 @@ class AppleReceiptVerification extends ReceiptVerification {
         if ($purchasedItem->product_id === $id) {
           return true;
         }
+      }
+    } else if (empty($response->receipt->product_id) === false) {
+      if ($response->receipt->product_id === $id) {
+        return true;
       }
     }
 
