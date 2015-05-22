@@ -193,7 +193,7 @@ class DynamoDb extends DbClient {
       $params['KeyConditions'] = $conditions;
     }
 
-    return $this->client->getQueryIterator($params)
+    return $this->client->getQueryIterator($params);
   }
 
 }
