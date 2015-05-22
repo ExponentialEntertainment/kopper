@@ -2,13 +2,13 @@
 
 namespace Kopper\Aws;
 
+use Aws\DynamoDb\DynamoDbClient;
+use Aws\DynamoDb\Enum\Select;
+use Aws\DynamoDb\Exception\ResourceInUseException;
+use Aws\DynamoDb\Marshaler;
 use Kopper\Cache\LocalCache;
 use Kopper\Environment;
-use Aws\DynamoDb\DynamoDbClient;
-use Aws\DynamoDb\Exception\ResourceInUseException;
-use Aws\DynamoDb\Enum\Select;
-use Aws\DynamoDb\Iterator\ItemIterator;
-use Aws\DynamoDb\Marshaler;
+use const APPLICATION_ENV;
 
 class DynamoDb extends DbClient {
 
@@ -159,9 +159,7 @@ class DynamoDb extends DbClient {
       $params['AttributesToGet'] = $fields;
     }
 
-    $iterator = new ItemIterator($this->client->getScanIterator($params));
-
-    return $iterator;
+    return $this->client->getScanIterator($params);
   }
 
   public function scan($tableName, array $conditions = null, array $fields = null) {
@@ -178,9 +176,7 @@ class DynamoDb extends DbClient {
       $params['ScanFilter'] = $conditions;
     }
 
-    $iterator = new ItemIterator($this->client->getScanIterator($params));
-
-    return $iterator;
+    return $this->client->getScanIterator($params);
   }
   
   public function query($tableName, array $conditions = null, array $fields = null) {
@@ -197,9 +193,7 @@ class DynamoDb extends DbClient {
       $params['KeyConditions'] = $conditions;
     }
 
-    $iterator = new ItemIterator($this->client->getQueryIterator($params));
-
-    return $iterator;
+    return $this->client->getQueryIterator($params)
   }
 
 }
