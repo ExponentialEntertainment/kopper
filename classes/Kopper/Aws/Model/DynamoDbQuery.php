@@ -21,7 +21,7 @@ abstract class DynamoDbQuery {
 
   abstract public function tableName();
 
-  protected function populate(array $data) {
+  protected function populate($data) {
     if (empty($data) === false) {
       return $this->createObject($data);
     } else {

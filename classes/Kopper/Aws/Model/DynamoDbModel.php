@@ -8,7 +8,7 @@ use Kopper\Aws\DynamoDb;
 abstract class DynamoDbModel extends ArrayObject {
 
   protected $db;
-  private $schema;    
+  protected $schema;    
   public $tableName;
   
   public function __construct($array) {
