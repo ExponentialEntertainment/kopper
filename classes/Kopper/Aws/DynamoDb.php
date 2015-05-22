@@ -8,7 +8,6 @@ use Aws\DynamoDb\Exception\ResourceInUseException;
 use Aws\DynamoDb\Marshaler;
 use Kopper\Cache\LocalCache;
 use Kopper\Environment;
-use const APPLICATION_ENV;
 
 class DynamoDb extends DbClient {
 
