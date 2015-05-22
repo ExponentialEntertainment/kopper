@@ -29,7 +29,7 @@ abstract class DynamoDbQuery {
     }
   }
   
-  protected function populateArray(array $rawItems){
+  protected function populateArray($rawItems){
     $marshaler = new Marshaler();
 
     $items = array();
