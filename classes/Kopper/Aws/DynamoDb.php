@@ -33,7 +33,11 @@ class DynamoDb extends DbClient {
       'Key' => $marshaler->marshalItem($key)
     ));
 
-    return $marshaler->unmarshalItem($result['Item']);
+    if(isset($result['Item']) === true){
+      return $marshaler->unmarshalItem($result['Item']);
+    }else{
+      return null;
+    }
   }
 
   public function putItem($tableName, array $item, $condition = null, $conditionValuesMap = null) {
