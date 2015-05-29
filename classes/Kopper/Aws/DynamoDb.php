@@ -60,7 +60,7 @@ class DynamoDb extends DbClient {
     $this->client->putItem($params);
   }
 
-  public function updateItem($tableName, array $key, $updateExpression = null, $expressionValuesMap = null) {
+  public function updateItem($tableName, array $key, $updateExpression, $expressionValuesMap = null) {
     $marshaler = new Marshaler();
 
     $params = array(
@@ -69,19 +69,17 @@ class DynamoDb extends DbClient {
       'ReturnValues' => ReturnValue::UPDATED_NEW
     );
 
-    if (empty($updateExpression) === false) {
-      $params['UpdateExpression'] = $updateExpression;
+    $params['UpdateExpression'] = $updateExpression;
 
-      if (empty($expressionValuesMap) === false) {
-        $params['ExpressionAttributeValues'] = $expressionValuesMap;
-      }
+    if (empty($expressionValuesMap) === false) {
+      $params['ExpressionAttributeValues'] = $expressionValuesMap;
     }
 
     $result = $this->client->updateItem($params);
-    
+
     if (isset($result['Attributes']) === true) {
       return $marshaler->unmarshalItem($result['Attributes']);
-    }else{
+    } else {
       return null;
     }
   }

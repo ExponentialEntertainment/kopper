@@ -16,7 +16,7 @@ abstract class DbClient extends AwsClient {
 
   abstract public function putItem($tableName, array $item);
 
-  abstract public function updateItem($tableName, array $key, array $item);
+  abstract public function updateItem($tableName, array $key, $item);
 
   abstract public function deleteItem($tableName, array $key);
 

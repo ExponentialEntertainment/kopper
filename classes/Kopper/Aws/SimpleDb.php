@@ -45,7 +45,7 @@ class SimpleDb extends DbClient {
     ));
   }
 
-  public function updateItem($tableName, array $key, array $item) {
+  public function updateItem($tableName, array $key, $item) {
     $this->putItem($tableName, $item);
   }
 
