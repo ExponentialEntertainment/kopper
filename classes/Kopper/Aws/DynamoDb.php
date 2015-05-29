@@ -41,7 +41,7 @@ class DynamoDb extends DbClient {
     }
   }
 
-  public function putItem($tableName, array $item, $condition = null, $conditionValuesMap = null) {
+  public function putItem($tableName, array $item, $condition = null, $expressionValuesMap = null) {
     $marshaler = new Marshaler();
 
     $params = array(
@@ -52,15 +52,15 @@ class DynamoDb extends DbClient {
     if (empty($condition) === false) {
       $params['ConditionExpression'] = $condition;
 
-      if (empty($conditionValuesMap) === false) {
-        $params['ExpressionAttributeValues'] = $conditionValuesMap;
+      if (empty($expressionValuesMap) === false) {
+        $params['ExpressionAttributeValues'] = $expressionValuesMap;
       }
     }
 
     $this->client->putItem($params);
   }
 
-  public function updateItem($tableName, array $key, array $item = null, $condition = null, $conditionValuesMap = null) {
+  public function updateItem($tableName, array $key, $updateExpression = null, $expressionValuesMap = null) {
     $marshaler = new Marshaler();
 
     $params = array(
@@ -69,15 +69,11 @@ class DynamoDb extends DbClient {
       'ReturnValues' => ReturnValue::UPDATED_NEW
     );
 
-    if (empty($item) === false) {
-      $params['AttributeUpdates'] = $item;
-    }
+    if (empty($updateExpression) === false) {
+      $params['UpdateExpression'] = $updateExpression;
 
-    if (empty($condition) === false) {
-      $params['ConditionExpression'] = $condition;
-
-      if (empty($conditionValuesMap) === false) {
-        $params['ExpressionAttributeValues'] = $conditionValuesMap;
+      if (empty($expressionValuesMap) === false) {
+        $params['ExpressionAttributeValues'] = $expressionValuesMap;
       }
     }
 
