@@ -3,6 +3,7 @@
 namespace Kopper\Aws;
 
 use Aws\DynamoDb\DynamoDbClient;
+use Aws\DynamoDb\Enum\ReturnValue;
 use Aws\DynamoDb\Enum\Select;
 use Aws\DynamoDb\Exception\ResourceInUseException;
 use Aws\DynamoDb\Marshaler;
@@ -64,7 +65,8 @@ class DynamoDb extends DbClient {
 
     $params = array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Key' => $marshaler->marshalItem($key)
+      'Key' => $marshaler->marshalItem($key),
+      'ReturnValues' => ReturnValue::UPDATED_NEW
     );
 
     if (empty($item) === false) {
@@ -79,7 +81,13 @@ class DynamoDb extends DbClient {
       }
     }
 
-    $this->client->updateItem($params);
+    $result = $this->client->updateItem($params);
+    
+    if (isset($result['Attributes']) === true) {
+      return $marshaler->unmarshalItem($result['Attributes']);
+    }else{
+      return null;
+    }
   }
 
   public function deleteItem($tableName, array $key) {
