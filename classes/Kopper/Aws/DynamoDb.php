@@ -79,7 +79,7 @@ class DynamoDb extends DbClient {
       }
     }
 
-    $this->client->updateItem();
+    $this->client->updateItem($params);
   }
 
   public function deleteItem($tableName, array $key) {
