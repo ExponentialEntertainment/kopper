@@ -33,9 +33,9 @@ class DynamoDb extends DbClient {
       'Key' => $marshaler->marshalItem($key)
     ));
 
-    if(isset($result['Item']) === true){
+    if (isset($result['Item']) === true) {
       return $marshaler->unmarshalItem($result['Item']);
-    }else{
+    } else {
       return null;
     }
   }
@@ -50,7 +50,7 @@ class DynamoDb extends DbClient {
 
     if (empty($condition) === false) {
       $params['ConditionExpression'] = $condition;
-      
+
       if (empty($conditionValuesMap) === false) {
         $params['ExpressionAttributeValues'] = $conditionValuesMap;
       }
@@ -59,14 +59,27 @@ class DynamoDb extends DbClient {
     $this->client->putItem($params);
   }
 
-  public function updateItem($tableName, array $key, array $item) {
+  public function updateItem($tableName, array $key, array $item = null, $condition = null, $conditionValuesMap = null) {
     $marshaler = new Marshaler();
 
-    $this->client->updateItem(array(
+    $params = array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Key' => $marshaler->marshalItem($key),
-      'AttributeUpdates' => $item
-    ));
+      'Key' => $marshaler->marshalItem($key)
+    );
+
+    if (empty($item) === false) {
+      $params['AttributeUpdates'] = $item;
+    }
+
+    if (empty($condition) === false) {
+      $params['ConditionExpression'] = $condition;
+
+      if (empty($conditionValuesMap) === false) {
+        $params['ExpressionAttributeValues'] = $conditionValuesMap;
+      }
+    }
+
+    $this->client->updateItem();
   }
 
   public function deleteItem($tableName, array $key) {
@@ -181,7 +194,7 @@ class DynamoDb extends DbClient {
 
     return $this->client->getScanIterator($params);
   }
-  
+
   public function query($tableName, array $conditions = null, array $fields = null) {
     $params = array(
       'TableName' => $this->getRealEnvName($tableName)
