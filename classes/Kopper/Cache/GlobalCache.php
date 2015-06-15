@@ -33,7 +33,7 @@ class GlobalCache implements Cache {
         $memcache->addServer($server, $port);
       }
     }else{
-      $memcache->addServer($server, $port);
+      $memcache->addServer($servers, $port);
     }
   }
 
