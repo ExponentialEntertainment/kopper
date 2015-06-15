@@ -25,10 +25,14 @@ class GlobalCache implements Cache {
     return self::$instance;
   }
 
-  public static function init(array $servers, $port = 11211) {
+  public static function init($servers, $port = 11211) {
     $memcache = self::getInstance();
 
-    foreach ($servers as $server) {
+    if (is_array($servers) === true) {
+      foreach ($servers as $server) {
+        $memcache->addServer($server, $port);
+      }
+    }else{
       $memcache->addServer($server, $port);
     }
   }
