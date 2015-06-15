@@ -2,6 +2,8 @@
 
 namespace Kopper\Cache;
 
+use Kopper\Aws\Cache as AwsCache;
+
 class GlobalCache implements Cache {
 
   private static $instance;
@@ -27,7 +29,7 @@ class GlobalCache implements Cache {
 
   public static function init($servers, $port = 11211) {
     if (is_array($servers) === false && is_string($servers) === true) {
-      $cacheClient = new Cache();
+      $cacheClient = new AwsCache();
       $servers = $cacheClient->getEndpoints($servers);
     }
     
