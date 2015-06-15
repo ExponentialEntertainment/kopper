@@ -2,6 +2,8 @@
 
 namespace Kopper\Cache;
 
+use Kopper\Aws\Cache;
+
 class GlobalCache implements Cache {
 
   private static $instance;
@@ -26,14 +28,19 @@ class GlobalCache implements Cache {
   }
 
   public static function init($servers, $port = 11211) {
-    $memcache = self::getInstance();
+    if (is_array($servers) === false && is_string($servers) === true) {
+      $cacheClient = new Cache();
+      $servers = $cacheClient->getEndpoints($servers);
+    }
+    
+    self::addServers($servers);
+  }
 
-    if (is_array($servers) === true) {
-      foreach ($servers as $server) {
-        $memcache->addServer($server, $port);
-      }
-    }else{
-      $memcache->addServer($servers, $port);
+  public static function addServers(array $servers, $port = 11211) {
+    $memcache = self::getInstance();
+    
+    foreach ($servers as $server) {
+      $memcache->addServer($server, $port);
     }
   }
 
