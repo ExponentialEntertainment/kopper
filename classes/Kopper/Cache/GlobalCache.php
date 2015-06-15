@@ -2,8 +2,6 @@
 
 namespace Kopper\Cache;
 
-use Kopper\Aws\Cache;
-
 class GlobalCache implements Cache {
 
   private static $instance;
