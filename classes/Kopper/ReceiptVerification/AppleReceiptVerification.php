@@ -3,8 +3,6 @@
 namespace Kopper\ReceiptVerification;
 
 use Exception;
-use Kopper\Config;
-use Kopper\Environment;
 use Kopper\Exception\NonFatalException;
 use Kopper\Logger\Logger;
 use Kopper\URLRequest;
@@ -22,19 +20,7 @@ class AppleReceiptVerification extends ReceiptVerification {
       throw new NonFatalException('missing receipt');
     }
 
-    if (Config::get('receiptVerification.sandbox') === true) {
-      $url = self::SANDBOX_API;
-    } else {
-      $url = Environment::is(Environment::PRODUCTION) ? self::PRODUCTION_API : self::SANDBOX_API;
-    }
-    
-    $request = new URLRequest($url);
-
-    $response = $request->postJSON(array('receipt-data' => $data->receipt), false);
-
-    if (isset($response->status) === false || $response->status != 0) {
-      throw new NonFatalException('invalid receipt - ' . $response->status, 400);
-    }
+    $response = $this->check($data->receipt);
 
     if (empty($response->receipt->in_app) === false) {
       foreach ($response->receipt->in_app as $purchasedItem) {
@@ -51,6 +37,25 @@ class AppleReceiptVerification extends ReceiptVerification {
     Logger::getInstance()->log(new Exception('bad receipt - ' . json_encode($response)));
 
     return false;
+  }
+
+  protected function check($receipt, $url = null) {
+    $url = empty($url) ? self::PRODUCTION_API : $url;
+
+    $request = new URLRequest($url);
+    $response = $request->postJSON(array('receipt-data' => $receipt), false);
+
+    if (isset($response->status) === false) {
+      throw new NonFatalException('invalid receipt', 400);
+    } else if ($response->status != 0) {
+      if ($response->status === 21007) {
+        $response = $this->check($receipt, self::SANDBOX_API);
+      } else {
+        throw new NonFatalException('invalid receipt - ' . $response->status, 400);
+      }
+    }
+
+    return $response;
   }
 
 }
