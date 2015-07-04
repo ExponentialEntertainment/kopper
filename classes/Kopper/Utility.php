@@ -103,7 +103,7 @@ class Utility {
       'code' => $e->getCode(),
       'file' => $e->getFile(),
       'line' => $e->getLine(),
-      'uri' => empty($_SERVER['REQUEST_URI']) ? $_SERVER['SCRIPT_FILENAME'] : ($_SERVER['REQUEST_URI'] . (empty($_SERVER['QUERY_STRING']) ? ('?' . http_build_query($_POST)) : null)),
+      'uri' => empty($_SERVER['REQUEST_URI']) ? $_SERVER['SCRIPT_FILENAME'] : ($_SERVER['REQUEST_METHOD'] . ' ' . $_SERVER['REQUEST_URI'] . (empty($_SERVER['QUERY_STRING']) ? ('?' . http_build_query($_POST)) : null)),
       'message' => $e->getMessage(),
       'server' => self::getLocalIp(),
       'remote' => self::getRemoteIp()
@@ -184,7 +184,7 @@ class Utility {
       }
     }
   }
-  
+
   public static function generateRandomString($length = 16) {
     return substr(hash('sha256', time() . mt_rand()), 0, $length);
   }
