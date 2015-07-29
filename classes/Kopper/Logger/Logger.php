@@ -2,16 +2,17 @@
 
 namespace Kopper\Logger;
 
+use DateTime;
 use Exception;
-use Kopper\Utility;
-use Kopper\Environment;
 use Kopper\Config;
+use Kopper\Environment;
+use Kopper\Utility;
 
 class Logger {
 
   /**
    * 
-   * @return \Kopper\Logger\Logger
+   * @return Logger
    */
   public static function getInstance() {
     $className = Config::get('logger.class');
@@ -29,7 +30,6 @@ class Logger {
     if (Utility::isCLI() == true) {
       $this->logCli($exceptionInfo);
     } else {
-      $exceptionInfo['stack'] = $e->getTraceAsString();
       $this->logNonCli($exceptionInfo);
     }
 
@@ -50,13 +50,16 @@ class Logger {
     }
   }
 
+  protected function getAsLine($exceptionInfo) {
+    return 'error: ' . $exceptionInfo['exception'] . ' - code: ' . $exceptionInfo['code'] . ' - message: ' . $exceptionInfo['message'] . ' - file: ' . $exceptionInfo['file'] . "({$exceptionInfo['line']})" . ' - server: ' . $exceptionInfo['server'] . ' - remote: ' . $exceptionInfo['remote'] . ' - uri: ' . $exceptionInfo['uri'] . ' - stack: ' . $exceptionInfo['stack'];
+  }
+
   protected function logCli($exceptionInfo) {
-    print_r($exceptionInfo);
+    echo(date(DateTime::W3C) . ': ' . $this->getAsLine($exceptionInfo));
   }
 
   protected function logNonCli($exceptionInfo) {
-    $logMessage = 'error: ' . $exceptionInfo['exception'] . ' - code: ' . $exceptionInfo['code'] . ' - message: ' . $exceptionInfo['message'] . ' - file: ' . $exceptionInfo['file'] . "({$exceptionInfo['line']})" . ' - server: ' . $exceptionInfo['server'] . ' - remote: ' . $exceptionInfo['remote'] . ' - uri: ' . $exceptionInfo['uri'] . ' - stack: ' . $exceptionInfo['stack'];
-    error_log($logMessage);
+    error_log($this->getAsLine($exceptionInfo));
   }
 
   protected function logLocal($exceptionInfo) {

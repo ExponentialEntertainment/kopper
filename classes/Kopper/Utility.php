@@ -110,7 +110,7 @@ class Utility {
     );
 
     if (APPLICATION_ENV == Environment::LOCAL || $stack == true) {
-      $exceptionInfo['stack'] = $e->getTrace();
+      $exceptionInfo['stack'] = $e->getTraceAsString();
     }
 
     return $exceptionInfo;
