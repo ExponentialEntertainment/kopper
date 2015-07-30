@@ -40,7 +40,7 @@ class AwsClient {
     return new static($config);
   }
 
-  protected function getRealEnvName($name) {
+  public function getRealEnvName($name) {
     return Environment::prefix($name);
   }
 
