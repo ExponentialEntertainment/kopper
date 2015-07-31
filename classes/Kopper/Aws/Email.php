@@ -9,7 +9,7 @@ class Email extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = SesClient::factory($this->config);
+    $this->client = new SesClient($this->config);
   }
 
   public function getLimits() {

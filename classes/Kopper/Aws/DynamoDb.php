@@ -18,7 +18,7 @@ class DynamoDb extends DbClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = DynamoDbClient::factory($this->config);
+    $this->client = new DynamoDbClient($this->config);
   }
 
   protected function isValidKey(array $key) {

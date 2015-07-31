@@ -10,7 +10,7 @@ class CloudFront extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = CloudFrontClient::factory($this->config);
+    $this->client = new CloudFrontClient($this->config);
   }
 
   public function invalidate($distributionId, $keys) {

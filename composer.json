@@ -12,7 +12,7 @@
     "preferred-install": "dist"
   },
   "require": {
-    "aws/aws-sdk-php": "2.*",
+    "aws/aws-sdk-php": "3.*",
     "slim/slim": "2.*",
     "propel/propel": "dev-master",
     "facebook/php-sdk-v4": "4.*",

@@ -3,7 +3,7 @@
 namespace Kopper\Aws;
 
 use Kopper\Cache\GlobalCache;
-use Aws\SimpleDb\SimpleDbClient;
+//use Aws\SimpleDb\SimpleDbClient;
 
 class SimpleDb extends DbClient {
 
@@ -11,9 +11,10 @@ class SimpleDb extends DbClient {
   const ALL_TABLES_KEY = 'simpledb-tables';
 
   public function __construct($config = array()) {
-    parent::__construct($config);
-
-    $this->client = SimpleDbClient::factory($this->config);
+    throw new Exception('not supported in aws php sdk v3');
+    
+    //parent::__construct($config);
+    //$this->client = new SimpleDbClient($this->config);
   }
   
   protected function isValidKey(array $key) {

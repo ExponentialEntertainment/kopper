@@ -9,7 +9,7 @@ class Notification extends AwsClient {
 	public function __construct($config = array()) {
     parent::__construct($config);
 
-		$this->client = SnsClient::factory($this->config);
+		$this->client = new SnsClient($this->config);
 	}
 
 	public function publish($topic, $subject, $message) {

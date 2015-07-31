@@ -10,7 +10,7 @@ class Cache extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = ElastiCacheClient::factory($this->config);
+    $this->client = new ElastiCacheClient($this->config);
   }
 
   public function getEndpoints($name) {

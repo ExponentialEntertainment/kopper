@@ -13,7 +13,7 @@ class Queue extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = SqsClient::factory($this->config);
+    $this->client = new SqsClient($this->config);
   }
 
   public function getQueueUrl($queueName) {

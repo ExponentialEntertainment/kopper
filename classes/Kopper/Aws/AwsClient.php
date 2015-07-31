@@ -15,15 +15,19 @@ class AwsClient {
   }
 
   public static function defaultConfig() {
-    $config = array();
+    $config = array(
+      'version' => 'latest'
+    );
 
     if (APPLICATION_ENV == Environment::LOCAL) {
+      $config['credentials'] = array();
+
       if (empty($config['key']) === true) {
-        $config['key'] = Config::get('aws.key');
+        $config['credentials']['key'] = Config::get('aws.key');
       }
 
       if (empty($config['secret']) === true) {
-        $config['secret'] = Config::get('aws.secret');
+        $config['credentials']['secret'] = Config::get('aws.secret');
       }
     }
 

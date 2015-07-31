@@ -2,26 +2,27 @@
 
 namespace Kopper\Aws;
 
-use Aws\Common\InstanceMetadata\InstanceMetadataClient;
+use Kopper\URLRequest;
 
-/**
- * Description of Meta
- *
- * @author eric
- */
 class Meta extends AwsClient {
+
+  const ADDRESS = 'http://169.254.169.254/latest';
 
   public function __construct($config = array()) {
     parent::__construct($config);
-    
-    $this->client = InstanceMetadataClient::factory($this->config);
+
+    $this->client = new URLRequest();
+  }
+
+  public function get($api) {
+    $this->client->setURL(self::ADDRESS . $api);
+    $result = $this->client->get();
+
+    return $result;
   }
 
   public function getPublicHostname() {
-    $request = $this->client->get('meta-data/public-hostname/');
-    $result = $request->send()->getBody(true);
-
-    return $result;
+    return $this->get('/meta-data/public-hostname');
   }
 
 }

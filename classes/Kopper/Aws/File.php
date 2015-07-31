@@ -9,7 +9,7 @@ class File extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
-    $this->client = S3Client::factory($this->config);
+    $this->client = new S3Client($this->config);
   }
 
   public function register() {

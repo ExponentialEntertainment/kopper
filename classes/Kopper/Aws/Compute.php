@@ -6,36 +6,38 @@ use Aws\Ec2\Ec2Client;
 
 class Compute extends AwsClient {
 
-	public function __construct($config = array()) {
+  public function __construct($config = array()) {
     parent::__construct($config);
 
-		$this->client = Ec2Client::factory($this->config);
-	}
+    $this->client = new Ec2Client($this->config);
+  }
 
-	public function getInstances($name) {
-		$iterator = $this->client->getDescribeInstancesIterator(array(
-				'DryRun' => false,
-				'Filters' => array(
-						array(
-								'Name' => 'tag:Name',
-								'Values' => array($name)
-						)
-				)
-		));
+  public function getInstances($name) {
+    $iterator = $this->client->getDescribeInstancesPaginator(array(
+      'DryRun' => false,
+      'Filters' => array(
+        array(
+          'Name' => 'tag:Name',
+          'Values' => array($name)
+        )
+      )
+    ));
 
-		return $iterator;
-	}
+    return $iterator;
+  }
 
-	public function getInstanceDomains($name) {
-		$instances = $this->getInstances($name);
+  public function getInstanceDomains($name) {
+    $results = $this->getInstances($name);
 
-		$domains = array();
+    $domains = array();
 
-		foreach ($instances as $instance) {
-			array_push($domains, $instance['PublicDnsName']);
-		}
+    foreach ($results as $result) {
+      foreach ($result['Contents'] as $instance) {
+        array_push($domains, $instance['PublicDnsName']);
+      }
+    }
 
-		return $domains;
-	}
+    return $domains;
+  }
 
 }
