@@ -4,4 +4,7 @@
       <directory>../libraries</directory>
     </blacklist>
   </filter>
+  <testsuite>
+    <directory>./</directory>
+  </testsuite>
 </phpunit>
