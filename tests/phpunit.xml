@@ -1,4 +1,4 @@
-<phpunit bootstrap="bootstrap.php" colors="true">
+<phpunit bootstrap="./bootstrap.php" colors="true">
   <filter>
     <blacklist>
       <directory>../libraries</directory>
