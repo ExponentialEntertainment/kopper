@@ -13,18 +13,18 @@ abstract class AutoRestController extends RestController {
 
   public function __construct(Slim $app, array $params = array()) {
     parent::__construct($app, $params);
-    
+
     $this->connectToDatabase();
   }
-  
+
   abstract protected function createObject();
 
   abstract protected function createQuery();
 
-  public function findByPrimaryKey(ModelCriteria $query, $key){
+  public function findByPrimaryKey(ModelCriteria $query, $key) {
     return $query->findPk($key);
   }
-  
+
   public function save(ActiveRecordInterface $record) {
     $record->save();
   }
@@ -32,15 +32,15 @@ abstract class AutoRestController extends RestController {
   public function update(ActiveRecordInterface $record, array $params) {
     $record->fromArray($params, TableMap::TYPE_CAMELNAME);
   }
-  
-  protected function query(QueryFilter $filter, array $params, $query = null){
+
+  protected function query(QueryFilter $filter, array $params, $query = null) {
     unset($params[self::PARAM_ID]);
-    
-    if(empty($query) === true){
+
+    if (empty($query) === true) {
       $query = $this->createQuery();
     }
-    
-    return $filter->paginate($filter->addFilters($query, $params), $filter->getPage($params));
+
+    return $filter->paginate($filter->addFilters($query, $params), $filter->getPage($params), $filter->getPageSize($params));
   }
 
   public function getAction() {
@@ -54,10 +54,10 @@ abstract class AutoRestController extends RestController {
         'records' => empty($records) ? array() : $records->toArray(null, false, TableMap::TYPE_CAMELNAME),
         'links' => $filter->getLinks($records)
       );
-      
+
       return $this->outputJson($response);
-    } else {      
-      $record = $this->findByPrimaryKey($this->createQuery(), $id);      
+    } else {
+      $record = $this->findByPrimaryKey($this->createQuery(), $id);
       $record = empty($record) ? null : $record->toArray(TableMap::TYPE_CAMELNAME);
 
       if (empty($record) === false) {

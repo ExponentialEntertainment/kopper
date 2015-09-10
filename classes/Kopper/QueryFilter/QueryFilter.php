@@ -10,10 +10,15 @@ use Propel\Runtime\Util\PropelModelPager;
 class QueryFilter {
 
   const PAGE = 'page';
+  const PAGE_SIZE = 'per_page';
   const COMPARISON_SUFFIX = '-cp';
 
   public function getPage(array $params) {
     return isset($params[self::PAGE]) ? $params[self::PAGE] : 1;
+  }
+  
+  public function getPageSize(array $params){
+    return isset($params[self::PAGE_SIZE]) ? $params[self::PAGE_SIZE] : 25;
   }
 
   protected function clean($key) {
