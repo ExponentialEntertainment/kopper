@@ -31,11 +31,8 @@ class AwsClient {
       }
     }
 
-    if (empty($config['region']) == true) {
-      $region = Config::get('aws.region');
-
-      $config['region'] = empty($region) ? 'us-east-1' : $region;
-    }
+    $region = Config::get('aws.region');
+    $config['region'] = empty($region) ? 'us-east-1' : $region;
 
     return $config;
   }
