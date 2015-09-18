@@ -33,7 +33,7 @@ class GoogleReceiptVerification extends ReceiptVerification {
     $purchaseInfo = json_decode($data->receipt);
     $productId = empty($purchaseInfo->productId) ? null : $purchaseInfo->productId;
     
-    return $id === $productId;
+    return strtolower($id) === $productId;
   }
 
 }
