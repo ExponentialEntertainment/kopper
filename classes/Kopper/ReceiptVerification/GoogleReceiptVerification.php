@@ -16,7 +16,7 @@ class GoogleReceiptVerification extends ReceiptVerification {
       throw new NonFatalException('missing receipt or signature');
     }
 
-    $signature = str_replace(' ', '+', $data->signature);
+    $signature = base64_decode(str_replace(' ', '+', $data->signature));
 
     $publicKey = Config::get('google.iab.key');
 
