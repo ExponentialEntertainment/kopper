@@ -16,10 +16,14 @@ class File extends AwsClient {
     $this->client->registerStreamWrapper();
   }
 
+  protected function cleanKey($key) {
+    return substr($key, 0, 1) === '/' ? substr($key, 1) : $key;
+  }
+
   public function getFile($bucket, $key) {
     $result = $this->client->getObject(array(
       'Bucket' => $bucket,
-      'Key' => $key
+      'Key' => $this->cleanKey($key)
     ));
 
     return $result['Body'];
@@ -28,7 +32,7 @@ class File extends AwsClient {
   public function saveFile($bucket, $key, $data, $contentType = null, $acl = 'public-read', $params = array()) {
     $defaultParams = array(
       'Bucket' => $bucket,
-      'Key' => $key,
+      'Key' => $this->cleanKey($key),
       'Body' => $data
     );
 
@@ -50,8 +54,8 @@ class File extends AwsClient {
   public function copyFile($bucket, $source, $destination, $contentType = null, $acl = 'public-read', $params = array()) {
     $defaultParams = array(
       'Bucket' => $bucket,
-      'CopySource' => "$bucket/$source",
-      'Key' => $destination
+      'CopySource' => "$bucket/{$this->cleanKey($source)}",
+      'Key' => $this->cleanKey($destination)
     );
 
     if (empty($acl) === false) {
@@ -72,7 +76,7 @@ class File extends AwsClient {
   public function deleteFile($bucket, $key) {
     $this->client->deleteObject(array(
       'Bucket' => $bucket,
-      'Key' => $key
+      'Key' => $this->cleanKey($key)
     ));
   }
 
