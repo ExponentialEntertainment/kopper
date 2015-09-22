@@ -16,11 +16,13 @@ class CloudFront extends AwsClient {
   public function invalidate($distributionId, $keys) {
     $this->client->createInvalidation(array(
       'DistributionId' => $distributionId,
-      'Paths' => array(
-        'Quantity' => count($keys),
-        'Items' => $keys
-      ),
-      'CallerReference' => Config::get('env.prefix') . '-' . time()
+      'InvalidationBatch' => array(
+        'Paths' => array(
+          'Quantity' => count($keys),
+          'Items' => $keys
+        ),
+        'CallerReference' => Config::get('env.prefix') . '-' . time()
+      )
     ));
   }
 
