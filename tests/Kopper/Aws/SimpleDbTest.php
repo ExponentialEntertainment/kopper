@@ -2,13 +2,12 @@
 
 namespace Tests\Kopper\Aws;
 
-//use Kopper\Aws\SimpleDb;
+use Kopper\Aws\SimpleDb;
 
 class SimpleDbTest extends AwsClientBaseTest {
 
   public function createClient() {
-    //return new SimpleDb();
-    return 'fake';
+    return new SimpleDb();
   }
 
 }

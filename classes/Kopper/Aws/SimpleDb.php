@@ -2,8 +2,8 @@
 
 namespace Kopper\Aws;
 
-use Kopper\Cache\GlobalCache;
-//use Aws\SimpleDb\SimpleDbClient;
+use Aws\SimpleDb\SimpleDbClient;
+use Kopper\Cache\LocalCache;
 
 class SimpleDb extends DbClient {
 
@@ -11,20 +11,19 @@ class SimpleDb extends DbClient {
   const ALL_TABLES_KEY = 'simpledb-tables';
 
   public function __construct($config = array()) {
-    throw new Exception('not supported in aws php sdk v3');
-    
-    //parent::__construct($config);
-    //$this->client = new SimpleDbClient($this->config);
+    parent::__construct($config);
+
+    $this->client = new SimpleDbClient($this->config);
   }
-  
+
   protected function isValidKey(array $key) {
     return (empty($key[self::NAME]) === false && preg_match('/^[a-zA-Z0-9_]+$/', $key[self::NAME]) === 1);
   }
-  
-  protected function getKey(array $key){    
-    if($this->isValidKey($key) === true){
+
+  protected function getKey(array $key) {
+    if ($this->isValidKey($key) === true) {
       return (string) $key[self::NAME];
-    }else{
+    } else {
       $this->invalidKey($key);
     }
   }
@@ -58,7 +57,7 @@ class SimpleDb extends DbClient {
   }
 
   public function listTables($clearCache = false) {
-    $tables = GlobalCache::get(self::ALL_TABLES_KEY);
+    $tables = LocalCache::get(self::ALL_TABLES_KEY);
 
     if ($tables === false || $clearCache == true) {
       $nextToken = null;
@@ -77,7 +76,7 @@ class SimpleDb extends DbClient {
         $nextToken = $result['NextToken'];
       } while (empty($nextToken) == false);
 
-      GlobalCache::set(self::ALL_TABLES_KEY, $tables);
+      LocalCache::set(self::ALL_TABLES_KEY, $tables);
     }
 
     return $tables;
