@@ -130,7 +130,7 @@ class DynamoDb extends DbClient {
       //already created wait for table existis
     }
 
-    $this->client->waitUntilTableExists(array('TableName' => $fullTableName));
+    $this->client->waitUntil('TableExists', array('TableName' => $fullTableName));
 
     $this->listTables(true);
   }
@@ -146,8 +146,8 @@ class DynamoDb extends DbClient {
   }
 
   public function deleteTable($tableName) {
-    $this->client->deleteTable(array('TableName' => $this->getRealEnvName($tableName)));
-    $this->client->waitUntilTableNotExists(array('TableName' => $this->getRealEnvName($tableName)));
+    $this->client->deleteTable(array('TableName' => $this->getRealEnvName($tableName)));    
+    $this->client->waitUntil('TableNotExists', array('TableName' => $this->getRealEnvName($tableName)));
 
     $this->listTables(true);
   }
