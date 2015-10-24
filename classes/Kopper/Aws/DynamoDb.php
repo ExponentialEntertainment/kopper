@@ -3,8 +3,6 @@
 namespace Kopper\Aws;
 
 use Aws\DynamoDb\DynamoDbClient;
-use Aws\DynamoDb\Enum\ReturnValue;
-use Aws\DynamoDb\Enum\Select;
 use Aws\DynamoDb\Exception\ResourceInUseException;
 use Aws\DynamoDb\Marshaler;
 use Kopper\Cache\LocalCache;
@@ -66,7 +64,7 @@ class DynamoDb extends DbClient {
     $params = array(
       'TableName' => $this->getRealEnvName($tableName),
       'Key' => $marshaler->marshalItem($key),
-      'ReturnValues' => ReturnValue::UPDATED_NEW
+      'ReturnValues' => 'UPDATED_NEW'
     );
 
     $params['UpdateExpression'] = $updateExpression;
@@ -155,7 +153,7 @@ class DynamoDb extends DbClient {
   public function count($tableName, array $conditions = null) {
     $params = array(
       'TableName' => $this->getRealEnvName($tableName),
-      'Select', Select::COUNT
+      'Select', 'COUNT'
     );
 
     if (empty($conditions) == false) {
@@ -173,7 +171,7 @@ class DynamoDb extends DbClient {
     );
 
     if (empty($fields) == false) {
-      $params['Select'] = Select::SPECIFIC_ATTRIBUTES;
+      $params['Select'] = 'SPECIFIC_ATTRIBUTES';
       $params['AttributesToGet'] = $fields;
     }
 
@@ -186,7 +184,7 @@ class DynamoDb extends DbClient {
     );
 
     if (empty($fields) == false) {
-      $params['Select'] = Select::SPECIFIC_ATTRIBUTES;
+      $params['Select'] = 'SPECIFIC_ATTRIBUTES';
       $params['AttributesToGet'] = $fields;
     }
 
@@ -203,7 +201,7 @@ class DynamoDb extends DbClient {
     );
 
     if (empty($fields) == false) {
-      $params['Select'] = Select::SPECIFIC_ATTRIBUTES;
+      $params['Select'] = 'SPECIFIC_ATTRIBUTES';
       $params['AttributesToGet'] = $fields;
     }
 
