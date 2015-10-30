@@ -165,59 +165,16 @@ class DynamoDb extends DbClient {
 		return $result['Count'];
 	}
 
-	public function getAll($tableName, array $fields = null) {
-		$params = array(
-			'TableName' => $this->getRealEnvName($tableName)
-		);
-
-		if (empty($fields) == false) {
-			$params['Select'] = 'SPECIFIC_ATTRIBUTES';
-			$params['AttributesToGet'] = $fields;
-		}
-
-		return $this->client->getScanPaginator($params);
+	public function getAll($tableName) {
+		return $this->scan($tableName, array());
 	}
 
-	public function scan($tableName, array $conditions = null, array $fields = null) {
-		$params = array(
-			'TableName' => $this->getRealEnvName($tableName)
-		);
-
-		if (empty($fields) == false) {
-			$params['Select'] = 'SPECIFIC_ATTRIBUTES';
-			$params['AttributesToGet'] = $fields;
-		}
-
-		if (empty($conditions) == false) {
-			$params['ScanFilter'] = $conditions;
-		}
-
-		return $this->client->getScanPaginator($params);
-	}
-
-	public function query($tableName, array $conditions = null, array $fields = null) {
-		$params = array(
-			'TableName' => $this->getRealEnvName($tableName)
-		);
-
-		if (empty($fields) == false) {
-			$params['Select'] = 'SPECIFIC_ATTRIBUTES';
-			$params['AttributesToGet'] = $fields;
-		}
-
-		if (empty($conditions) == false) {
-			$params['KeyConditions'] = $conditions;
-		}
-
-		return $this->client->getQueryPaginator($params);
-	}
-
-	public function rawScan($tableName, array $params) {
+	public function scan($tableName, array $params) {
 		$params['TableName'] = $this->getRealEnvName($tableName);
 		return $this->client->getScanPaginator($params);
 	}
 
-	public function rawQuery($tableName, array $params) {
+	public function query($tableName, array $params) {
 		$params['TableName'] = $this->getRealEnvName($tableName);
 		return $this->client->getQueryPaginator($params);
 	}
