@@ -1,22 +1,22 @@
 {
-  "name": "benconnito/kopper",
-  "license": "MIT",
-  "autoload": {
-    "psr-0": {
-      "Kopper": "classes",
-      "Propel": "classes"
-    }
-  },
-  "config": {
-    "vendor-dir": "libraries",
-    "preferred-install": "dist"
-  },
-  "require": {
-    "aws/aws-sdk-php": "3.*",
-    "aws/aws-sdk-php-v3-bridge": "*",
-    "slim/slim": "2.*",
-    "propel/propel": "dev-master",
-    "facebook/php-sdk-v4": "4.*",
-    "google/apiclient": "dev-master"
-  }
+	"name": "benconnito/kopper",
+	"license": "MIT",
+	"autoload": {
+		"psr-0": {
+			"Kopper": "classes",
+			"Propel": "classes"
+		}
+	},
+	"config": {
+		"vendor-dir": "libraries",
+		"preferred-install": "dist"
+	},
+	"require": {
+		"aws/aws-sdk-php": "3.*",
+		"aws/aws-sdk-php-v3-bridge": "*",
+		"slim/slim": "2.*",
+		"propel/propel": "~2.0@dev",
+		"facebook/php-sdk-v4": "4.*",
+		"google/apiclient": "1.*"
+	}
 }
