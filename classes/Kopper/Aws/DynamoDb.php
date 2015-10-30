@@ -171,12 +171,12 @@ class DynamoDb extends DbClient {
 
 	public function scan($tableName, array $params) {
 		$params['TableName'] = $this->getRealEnvName($tableName);
-		return $this->client->getScanIterator($params);
+		return $this->client->scan($params);
 	}
 
 	public function query($tableName, array $params) {
 		$params['TableName'] = $this->getRealEnvName($tableName);
-		return $this->client->getQueryIterator($params);
+		return $this->client->query($params);
 	}
 
 }
