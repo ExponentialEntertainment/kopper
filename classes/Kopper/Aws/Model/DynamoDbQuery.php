@@ -7,42 +7,42 @@ use Kopper\Aws\DynamoDb;
 
 abstract class DynamoDbQuery {
 
-  protected $db;
+	protected $db;
 
-  public function __construct() {
-    $this->db = DynamoDb::getInstance();
-  }
+	public function __construct() {
+		$this->db = new DynamoDb();
+	}
 
-  public static function create() {
-    return new static();
-  }
+	public static function create() {
+		return new static();
+	}
 
-  abstract protected function createObject(array $data);
+	abstract protected function createObject(array $data);
 
-  abstract public function tableName();
+	abstract public function tableName();
 
-  protected function populate($data) {
-    if (empty($data) === false) {
-      return $this->createObject($data);
-    } else {
-      return null;
-    }
-  }
-  
-  protected function populateArray($rawItems){
-    $marshaler = new Marshaler();
+	protected function populate($data) {
+		if (empty($data) === false) {
+			return $this->createObject($data);
+		} else {
+			return null;
+		}
+	}
 
-    $items = array();
+	protected function populateArray($rawItems) {
+		$marshaler = new Marshaler();
 
-    foreach ($rawItems as $rawItem) {
-      array_push($items, $this->createObject($marshaler->unmarshalItem($rawItem)));
-    }
+		$items = array();
 
-    return $items;
-  }
+		foreach ($rawItems as $rawItem) {
+			array_push($items, $this->createObject($marshaler->unmarshalItem($rawItem)));
+		}
 
-  public function find() {
-    return $this->populateArray($this->db->getAll($this->tableName()));
-  }
+		return $items;
+	}
+
+	public function find() {
+		return $this->populateArray($this->db->getAll($this->tableName()));
+	}
 
 }

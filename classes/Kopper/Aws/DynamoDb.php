@@ -39,6 +39,34 @@ class DynamoDb extends DbClient {
 		}
 	}
 
+	public function getItemBatch($tableName, array $keys) {
+		$realTableName = $this->getRealEnvName($tableName);
+		$marshaler = new Marshaler();
+
+		$marshaledKeys = array();
+
+		foreach ($keys as $key) {
+			array_push($marshaledKeys, $marshaler->marshalItem($key));
+		}
+
+		$result = $this->client->getItem(array(
+			$realTableName => array(
+				'ConsistentRead' => true,
+				'Keys' => $marshaledKeys
+			)
+		));
+
+		$items = array();
+
+		if (isset($result['Responses'][$realTableName]) === true) {
+			foreach ($result['Responses'][$realTableName] as $item) {
+				array_push($items, $marshaler->unmarshalItem($item));
+			}
+		}
+
+		return $items;
+	}
+
 	public function putItem($tableName, array $item, $condition = null, $expressionValuesMap = null) {
 		$marshaler = new Marshaler();
 
