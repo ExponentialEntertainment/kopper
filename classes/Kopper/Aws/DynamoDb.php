@@ -49,7 +49,7 @@ class DynamoDb extends DbClient {
 			array_push($marshaledKeys, $marshaler->marshalItem($key));
 		}
 
-		$result = $this->client->getItem(array(
+		$result = $this->client->batchGetItem(array(
 			$realTableName => array(
 				'ConsistentRead' => true,
 				'Keys' => $marshaledKeys
