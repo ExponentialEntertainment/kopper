@@ -50,9 +50,11 @@ class DynamoDb extends DbClient {
 		}
 
 		$result = $this->client->batchGetItem(array(
-			$realTableName => array(
-				'ConsistentRead' => true,
-				'Keys' => $marshaledKeys
+			'RequestItems' => array(
+				$realTableName => array(
+					'ConsistentRead' => true,
+					'Keys' => $marshaledKeys
+				)
 			)
 		));
 
