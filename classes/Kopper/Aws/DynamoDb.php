@@ -6,6 +6,7 @@ use Aws\DynamoDb\DynamoDbClient;
 use Aws\DynamoDb\Exception\ResourceInUseException;
 use Aws\DynamoDb\Marshaler;
 use Kopper\Cache\LocalCache;
+use Kopper\Config;
 use Kopper\Environment;
 
 class DynamoDb extends DbClient {
@@ -16,7 +17,14 @@ class DynamoDb extends DbClient {
 	public function __construct($config = array()) {
 		parent::__construct($config);
 
-		$this->client = new DynamoDbClient($this->config);
+		$dynamoConfig = $this->config;
+
+		$localPort = Config::get('dynamodb.local');
+		if (empty($localPort) === false) {
+			$dynamoConfig['endpoint'] = "http://localhost:$localPort";
+		}
+
+		$this->client = new DynamoDbClient($dynamoConfig);
 	}
 
 	protected function isValidKey(array $key) {
