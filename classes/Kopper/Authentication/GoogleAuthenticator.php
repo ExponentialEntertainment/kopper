@@ -54,8 +54,8 @@ class GoogleAuthenticator extends Authenticator {
         'provider' => self::PROVIDER_NAME,
         'id' => $profile['id'],
         'email' => $profile['email'],
-        'firstName' => $profile['givenName'],
-        'lastName' => $profile['familyName']
+        'firstName' => isset($profile['givenName']) ? $profile['givenName'] : null,
+        'lastName' => isset($profile['familyName']) ? $profile['familyName'] : null
       );
     }
 
