@@ -73,7 +73,7 @@ abstract class AutoRestController extends RestController {
     $this->update($record, $this->params());
     $this->save($record);
 
-    $this->outputJson($record->toArray(TableMap::TYPE_CAMELNAME));
+    return $this->outputJson($record->toArray(TableMap::TYPE_CAMELNAME));
   }
 
   public function putAction() {
