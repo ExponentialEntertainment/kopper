@@ -10,6 +10,8 @@ class CloudFront extends AwsClient {
   public function __construct($config = array()) {
     parent::__construct($config);
 
+		$this->config['region'] = 'us-east-1'; //cloudfront only uses us-east-1
+		
     $this->client = new CloudFrontClient($this->config);
   }
 
