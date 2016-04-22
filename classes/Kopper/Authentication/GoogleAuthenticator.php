@@ -6,6 +6,7 @@ use Google_Client;
 use Google_Service_Oauth2;
 use Kopper\Config;
 use Kopper\Exception\NonFatalException;
+use Kopper\Utility;
 
 class GoogleAuthenticator extends Authenticator {
 
@@ -14,6 +15,9 @@ class GoogleAuthenticator extends Authenticator {
 	public function getProfile($token) {
 		if (empty($this->profile) === true) {
 			$client = new Google_Client();
+
+			$client->setClientId(Config::get('google.api.client.id.' . Utility::os()));
+			$client->setClientSecret(Config::get('google.api.client.secret.' . Utility::os()));
 
 			$client->addScope('https://www.googleapis.com/auth/userinfo.profile');
 			$client->addScope('https://www.googleapis.com/auth/userinfo.email');
@@ -33,18 +37,12 @@ class GoogleAuthenticator extends Authenticator {
 					}
 				} else if (empty($token['access_token']) === false) {
 					//regular access token
-					$client->setClientId(Config::get('google.api.client.id'));
-					$client->setClientSecret(Config::get('google.api.client.secret'));
-
 					$client->setAccessToken(json_encode($token));
 				} else {
 					throw new NonFatalException('invalid token, no accpetable attribute');
 				}
 			} else if (is_string($token) === true) {
 				//token is a CODE to exchange for access token
-				$client->setClientId(Config::get('google.api.client.id'));
-				$client->setClientSecret(Config::get('google.api.client.secret'));
-
 				$client->authenticate($token);
 			} else {
 				throw new NonFatalException('invalid token, invalid type');
