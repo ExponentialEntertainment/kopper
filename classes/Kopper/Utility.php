@@ -35,7 +35,7 @@ class Utility {
 	}
 
 	public static function match($pattern, $subject) {
-		return preg_match($pattern, $subject) !== null;
+		return preg_match($pattern, $subject) == true;
 	}
 
 	public static function os() {
