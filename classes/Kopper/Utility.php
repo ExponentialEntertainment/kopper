@@ -188,7 +188,7 @@ class Utility {
 		$serverName = php_uname('n');
 		$key = 'process_lock_' . $processName;
 
-		if ($singleton === true && GlobalCache::get($key) === false) {
+		if ($singleton === true && empty(GlobalCache::get($key)) === false) {
 			exit();
 		}
 
