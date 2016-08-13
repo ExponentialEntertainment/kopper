@@ -46,7 +46,7 @@ class Utility {
 		} else {
 			$os = 'web';
 		}
-		
+
 		return $os;
 	}
 
@@ -185,13 +185,17 @@ class Utility {
 
 	public static function processLock() {
 		if (APPLICATION_ENV != Environment::LOCAL) {
+			$maxTime = 10;
+
+			sleep(rand(0, $maxTime));
+
 			$processName = md5(basename($_SERVER['SCRIPT_FILENAME']));
 			$serverName = php_uname('n');
 
 			$key = 'process_lock_' . $processName;
 			GlobalCache::set($key, $serverName);
 
-			sleep(10);
+			sleep($maxTime + 5);
 
 			$winner = GlobalCache::get($key);
 
