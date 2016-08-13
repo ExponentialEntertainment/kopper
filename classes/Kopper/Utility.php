@@ -183,7 +183,15 @@ class Utility {
 		return !empty($string) && is_string($string) && is_array(json_decode($string, true)) && json_last_error() === JSON_ERROR_NONE;
 	}
 
-	public static function processLock() {
+	public static function processLock($singleton = false) {
+		$processName = md5(basename($_SERVER['SCRIPT_FILENAME']));
+		$serverName = php_uname('n');
+		$key = 'process_lock_' . $processName;
+
+		if ($singleton === true && GlobalCache::get($key) === false) {
+			exit();
+		}
+
 		if (APPLICATION_ENV != Environment::LOCAL) {
 			$maxTime = 10;
 
@@ -203,6 +211,13 @@ class Utility {
 				exit();
 			}
 		}
+	}
+
+	public static function clearLock() {
+		$processName = md5(basename($_SERVER['SCRIPT_FILENAME']));
+		$key = 'process_lock_' . $processName;
+
+		GlobalCache::delete($key);
 	}
 
 	public static function generateRandomString($length = 16) {
