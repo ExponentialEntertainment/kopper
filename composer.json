@@ -16,7 +16,7 @@
 		"aws/aws-sdk-php-v3-bridge": "*",
 		"slim/slim": "2.*",
 		"propel/propel": "~2.0@dev",
-		"facebook/php-sdk-v4": "4.*",
+		"facebook/graph-sdk": "5.*",
 		"google/apiclient": "1.*"
 	}
 }

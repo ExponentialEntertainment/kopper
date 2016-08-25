@@ -2,32 +2,33 @@
 
 namespace Kopper\Authentication;
 
-use Facebook\FacebookRequest;
-use Facebook\FacebookSession;
-use Facebook\GraphUser;
+use Facebook\Facebook;
+use Kopper\Config;
 
 class FacebookAuthenticator extends Authenticator {
 
-  const PROVIDER_NAME = 'facebook';
+	const PROVIDER_NAME = 'facebook';
 
-  public function getProfile($token) {
-    if (empty($this->profile) === true) {
-      $session = new FacebookSession($token);
-      $session->validate();
+	public function getProfile($token) {
+		if (empty($this->profile) === true) {
+			$fb = new Facebook([
+				'app_id' => Config::get('facebook.app.id'),
+				'app_secret' => Config::get('facebook.app.secret'),
+				'default_access_token' => $token
+			]);
 
-      $request = new FacebookRequest($session, 'GET', '/me');
-      $profile = $request->execute()->getGraphObject(GraphUser::className());
+			$profile = $fb->get('/me')->getGraphUser();
 
-      $this->profile = array(
-        'provider' => self::PROVIDER_NAME,
-        'id' => $profile->getProperty('id'),
-        'email' => $profile->getProperty('email'),
-        'firstName' => $profile->getFirstName(),
-        'lastName' => $profile->getLastName()
-      );
-    }
-    
-    return $this->profile;
-  }
+			$this->profile = array(
+				'provider' => self::PROVIDER_NAME,
+				'id' => $profile->getField('id'),
+				'email' => $profile->getField('email'),
+				'firstName' => $profile->getFirstName(),
+				'lastName' => $profile->getLastName()
+			);
+		}
+
+		return $this->profile;
+	}
 
 }
