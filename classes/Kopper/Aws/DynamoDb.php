@@ -191,7 +191,7 @@ class DynamoDb extends DbClient {
 	public function count($tableName, array $conditions = null) {
 		$params = array(
 			'TableName' => $this->getRealEnvName($tableName),
-			'Select', 'COUNT'
+			'Select' => 'COUNT'
 		);
 
 		if (empty($conditions) == false) {
